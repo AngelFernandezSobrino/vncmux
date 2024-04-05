@@ -69,6 +69,15 @@ inline long long int get_timespec_diff(struct timespec* a, struct timespec* b) {
 	return (a->tv_sec - b->tv_sec) * 1000000000LL + (a->tv_nsec - b->tv_nsec);
 }
 
+char *get_password(rfbClient *client) {
+
+	char *password = malloc(sizeof("1zEW)bh]"));
+
+	memcpy(password, "1zEW)bh]", sizeof("1zEW)bh]"));
+
+	return password;
+}
+
 int main(int argc, char** argv) {
 	int err, opt, tmp;
 	unsigned int width = 1920, height = 1080;
@@ -93,8 +102,8 @@ int main(int argc, char** argv) {
 					err = EINVAL;
 					fprintf(stderr, "Invalid width '%s'\n", optarg);
 					goto fail;
-				}
-				width = tmp;
+			}
+			width = tmp;
 				break;
 			case 'h':
 				tmp = atoi(optarg);
@@ -102,8 +111,8 @@ int main(int argc, char** argv) {
 					err = EINVAL;
 					fprintf(stderr, "Invalid height '%s'\n", optarg);
 					goto fail;
-				}
-				height = tmp;
+			}
+			height = tmp;
 				break;
 			case 'r':
 				tmp = atoi(optarg);
@@ -111,8 +120,8 @@ int main(int argc, char** argv) {
 					err = EINVAL;
 					fprintf(stderr, "Invalid rate '%s'\n", optarg);
 					goto fail;
-				}
-				screen_update_rate = tmp;
+			}
+			screen_update_rate = tmp;
 				break;
 			case 'l':
 				tmp = atoi(optarg);
@@ -120,11 +129,11 @@ int main(int argc, char** argv) {
 					err = EINVAL;
 					fprintf(stderr, "Invalid listen port '%s'\n", optarg);
 					goto fail;
-				}
-				listen_port = tmp;
-				break;
-			default:
-				usage(binary);
+			}
+			listen_port = tmp;
+			break;
+		default:
+			usage(binary);
 		}
 	}
 
@@ -160,11 +169,18 @@ int main(int argc, char** argv) {
 	vnc_client->serverPort = port;
 
 	printf("Connecting to %s:%d\n", host, port);
+
+	// vnc_client->GetPassword = get_password;
+
 	if(!rfbInitClient(vnc_client, NULL, NULL)) {
 		err = 1;
 		fprintf(stderr, "Failed to initialize VNC client\n");
 		goto fail;
 	}
+	
+	printf("Client is connected\n");
+
+	printf("Creating server\n");
 
 	vnc_server = rfbGetScreen(NULL, NULL, width, height, 8, 3, 4);
 	if(!vnc_server) {
